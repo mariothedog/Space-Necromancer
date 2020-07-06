@@ -1,0 +1,56 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Player/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Level/Level.gd" type="Script" id=2]
+[ext_resource path="res://UI/HUD.tscn" type="PackedScene" id=3]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 10, 328 )
+
+[node name="Level" type="Node"]
+script = ExtResource( 2 )
+
+[node name="Camera2D" type="Camera2D" parent="."]
+current = true
+
+[node name="Bullets" type="Node" parent="."]
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 0, 256 )
+
+[node name="Enemies" type="Node" parent="."]
+
+[node name="Allies" type="Node" parent="."]
+
+[node name="Boundaries" type="StaticBody2D" parent="."]
+collision_layer = 16
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2( 520.5, 0 )
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Boundaries"]
+position = Vector2( -520.5, 0 )
+shape = SubResource( 1 )
+
+[node name="Top Row Start Pos" type="Position2D" parent="."]
+position = Vector2( -480, -248 )
+
+[node name="Allies Pos Y" type="Position2D" parent="."]
+position = Vector2( 0, 200 )
+
+[node name="Move Enemies" type="Timer" parent="."]
+wait_time = 0.8
+
+[node name="Enable Enemy Shoot" type="Timer" parent="."]
+one_shot = true
+autostart = true
+
+[node name="Enemy Shoot" type="Timer" parent="."]
+
+[node name="HUD" parent="." instance=ExtResource( 3 )]
+[connection signal="died" from="Player" to="." method="_on_Player_died"]
+[connection signal="timeout" from="Move Enemies" to="." method="_on_Move_Enemies_timeout"]
+[connection signal="timeout" from="Enable Enemy Shoot" to="." method="_on_Enable_Enemy_Shoot_timeout"]
+[connection signal="timeout" from="Enemy Shoot" to="." method="_on_Enemy_Shoot_timeout"]
