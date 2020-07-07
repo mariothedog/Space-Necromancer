@@ -18,6 +18,8 @@ onready var wall_detector_raycast = get_node("Wall Detector")
 onready var sprite = get_node("Sprite")
 onready var collision_shape = get_node("CollisionShape2D")
 onready var queue_free_after_death_timer = get_node("Queue Free After Death")
+onready var shoot_sfx = get_node("Shoot")
+onready var hurt_sfx = get_node("Hurt")
 
 # Constants
 const WALL_DETECTOR_CAST_LENGTH = 60
@@ -26,11 +28,11 @@ const BULLET_SPEED = 800
 const SHOOT_CHANCE = 0.0005
 
 const ENEMY_TEXTURES = [
-	preload("res://Enemies/Enemy0.png"),
-	preload("res://Enemies/Enemy1.png"),
-	preload("res://Enemies/Enemy2.png"),
-	preload("res://Enemies/Enemy3.png"),
-	preload("res://Enemies/Enemy4.png")
+	preload("res://Enemies/Textures/Enemy0.png"),
+	preload("res://Enemies/Textures/Enemy1.png"),
+	preload("res://Enemies/Textures/Enemy2.png"),
+	preload("res://Enemies/Textures/Enemy3.png"),
+	preload("res://Enemies/Textures/Enemy4.png")
 ]
 const ENEMIES_NUM_MOVEMENT_FRAMES = [2, 2, 2, 2, 2]
 
@@ -73,6 +75,8 @@ func shoot(dir : Vector2) -> void:
 	bullet.position = position
 	bullet.velocity = dir * BULLET_SPEED
 	bullets_collection_node.add_child(bullet)
+	
+	shoot_sfx.play()
 
 func die() -> void:
 	dead = true
@@ -93,6 +97,8 @@ func die() -> void:
 	ally.collision_shape.shape.extents = collision_shape.shape.extents
 	
 	queue_free_after_death_timer.start()
+	
+	shoot_sfx.play()
 
 func _on_Before_Can_Shoot_timeout() -> void:
 	can_shoot = true

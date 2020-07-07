@@ -1,0 +1,21 @@
+[remap]
+
+importer="wav"
+type="AudioStreamSample"
+path="res://.import/Hurt.wav-0329b79d146320cde8431cb91fddbd3c.sample"
+
+[deps]
+
+source_file="res://Enemies/Audio/Hurt.wav"
+dest_files=[ "res://.import/Hurt.wav-0329b79d146320cde8431cb91fddbd3c.sample" ]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop=false
+compress/mode=0

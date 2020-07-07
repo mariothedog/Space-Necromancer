@@ -13,6 +13,8 @@ onready var sprite = get_node("Sprite")
 onready var collision_shape = get_node("CollisionShape2D")
 onready var animate_movement_timer = get_node("Animate Movement")
 onready var queue_free_after_death_timer = get_node("Queue Free After Death")
+onready var shoot_sfx = get_node("Shoot")
+onready var hurt_sfx = get_node("Hurt")
 
 # Constants
 const SPEED = 500
@@ -52,6 +54,8 @@ func shoot(dir : Vector2) -> void:
 	bullet.connect("died", self, "_on_bullet_death")
 	bullets_collection_node.add_child(bullet)
 	current_bullet = bullet
+	
+	shoot_sfx.play()
 
 func die() -> void:
 	dead = true
@@ -63,6 +67,8 @@ func die() -> void:
 	
 	queue_free_after_death_timer.start()
 	animate_movement_timer.stop()
+	
+	hurt_sfx.play()
 
 func _on_Shoot_Delay_timeout() -> void:
 	can_shoot = true

@@ -1,7 +1,9 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Enemies/Enemy.gd" type="Script" id=1]
-[ext_resource path="res://Enemies/Enemy0.png" type="Texture" id=2]
+[ext_resource path="res://Enemies/Textures/Enemy0.png" type="Texture" id=2]
+[ext_resource path="res://Player/Audio/Hurt.wav" type="AudioStream" id=3]
+[ext_resource path="res://Player/Audio/Shoot.wav" type="AudioStream" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 17, 14 )
@@ -28,4 +30,12 @@ collision_mask = 16
 [node name="Queue Free After Death" type="Timer" parent="."]
 wait_time = 0.5
 one_shot = true
+
+[node name="Shoot" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 4 )
+volume_db = -40.0
+
+[node name="Hurt" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource( 3 )
+volume_db = -40.0
 [connection signal="timeout" from="Queue Free After Death" to="." method="_on_Queue_Free_After_Death_timeout"]
