@@ -1,5 +1,8 @@
 extends Area2D
 
+# Signals
+signal died
+
 # Get nodes
 onready var visibility_notifier = get_node("VisibilityNotifier2D")
 
@@ -9,7 +12,7 @@ var collisions = 0
 var max_collisions = 1
 var immortal = false
 
-func _ready():
+func _ready() -> void:
 	if connect("body_entered", self, "_on_Bullet_body_entered") != OK:
 		print_debug("An error occurred while connecting the body_entered bullet signal to the _on_Bullet_body_entered method.")
 	
@@ -26,7 +29,11 @@ func _on_Bullet_body_entered(body) -> void:
 	body.die()
 	collisions += 1
 	if collisions >= max_collisions:
-		queue_free()
+		die()
 
 func _on_bullet_screen_exit() -> void:
+	die()
+
+func die() -> void:
 	queue_free()
+	emit_signal("died")

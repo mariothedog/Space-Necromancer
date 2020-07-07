@@ -1,6 +1,7 @@
 tool
 extends KinematicBody2D
 
+# Signals
 signal died
 signal wall_detected
 
@@ -24,8 +25,6 @@ const WALL_DETECTOR_CAST_LENGTH = 60
 const BULLET_SPEED = 800
 const SHOOT_CHANCE = 0.0005
 
-const DEATH_SPRITE_MODULATE_COLOR = Color.blue
-
 const ENEMY_TEXTURES = [
 	preload("res://Enemies/Enemy0.png"),
 	preload("res://Enemies/Enemy1.png"),
@@ -48,7 +47,7 @@ var dead = false
 
 onready var enemy_num_movement_frames = ENEMIES_NUM_MOVEMENT_FRAMES[type]
 
-func _ready():
+func _ready() -> void:
 	if Engine.editor_hint:
 		return
 	
@@ -56,7 +55,7 @@ func _ready():
 	
 	wall_detector_raycast.cast_to.x = WALL_DETECTOR_CAST_LENGTH
 
-func set_type(t):
+func set_type(t) -> void:
 	type = t
 	sprite = get_node("Sprite")
 	if sprite:
@@ -77,12 +76,12 @@ func shoot(dir : Vector2) -> void:
 
 func die() -> void:
 	dead = true
-	emit_signal("died")
-	
-	# Because a Sprite node's frame starts at 0, this variable, which accounts for the number of movement frames, is also equal to the index of the last frame (death frame)
+	collision_shape.set_deferred("disabled", true)
+	emit_signal("died", self)
+
 	sprite.z_index = SPRITE_Z_INDEX_AFTER_DEATH
+	# Because a Sprite node's frame starts at 0, this variable, which accounts for the number of movement frames, is also equal to the index of the last frame (death frame)
 	sprite.frame = enemy_num_movement_frames
-	sprite.modulate = DEATH_SPRITE_MODULATE_COLOR
 	
 	var ally = ally_scene.instance()
 	ally.position = position
@@ -95,8 +94,8 @@ func die() -> void:
 	
 	queue_free_after_death_timer.start()
 
-func _on_Before_Can_Shoot_timeout():
+func _on_Before_Can_Shoot_timeout() -> void:
 	can_shoot = true
 
-func _on_Queue_Free_After_Death_timeout():
+func _on_Queue_Free_After_Death_timeout() -> void:
 	queue_free()

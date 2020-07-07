@@ -13,6 +13,7 @@ script = ExtResource( 2 )
 [node name="Sprite" type="Sprite" parent="."]
 scale = Vector2( 5, 5 )
 texture = ExtResource( 1 )
+hframes = 3
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource( 1 )
@@ -20,4 +21,14 @@ shape = SubResource( 1 )
 [node name="Shoot Delay" type="Timer" parent="."]
 wait_time = 0.3
 one_shot = true
+
+[node name="Animate Movement" type="Timer" parent="."]
+wait_time = 0.15
+autostart = true
+
+[node name="Queue Free After Death" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
 [connection signal="timeout" from="Shoot Delay" to="." method="_on_Shoot_Delay_timeout"]
+[connection signal="timeout" from="Animate Movement" to="." method="_on_Animate_Movement_timeout"]
+[connection signal="timeout" from="Queue Free After Death" to="." method="_on_Queue_Free_After_Death_timeout"]

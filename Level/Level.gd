@@ -32,6 +32,14 @@ var num_of_movements = 0
 var num_of_moments_on_last_wall_detection
 var game_over = false
 
+func _unhandled_input(_event) -> void:
+	if Input.is_action_just_pressed("restart"):
+		restart()
+
+func restart() -> void:
+	if get_tree().reload_current_scene() != OK:
+		print_debug("An error occurred while attempting to restart the level!")
+
 func _ready() -> void:
 	randomize()
 	
@@ -81,14 +89,14 @@ func _process(_delta) -> void:
 					lose_game()
 					return
 
-func lose_game() -> void: # TODO
+func lose_game() -> void:
 	game_over = true
 	move_enemies_timer.stop()
 	
-	if get_tree().change_scene("res://UI/Game Over.tscn") != OK:
+	if get_tree().change_scene("res://UI/Game Over/Game Over.tscn") != OK:
 		print_debug("An error occurred while attempting to change to the game over scene.")
 
-func _on_Player_died() -> void:
+func _on_Player_queue_freed() -> void:
 	lose_game()
 
 func _on_Enable_Enemy_Shoot_timeout() -> void:
@@ -102,7 +110,13 @@ func _on_Enemy_Shoot_timeout() -> void:
 		rand_enemy = enemy_rows[randi() % NUM_OF_ROWS][randi() % NUM_OF_ENEMIES_IN_ROW]
 	rand_enemy.shoot(ENEMY_SHOOT_DIRECTION)
 
-func _on_enemy_death() -> void:
+func _on_enemy_death(enemy) -> void:
+	for row in enemy_rows:
+		var index = row.find(enemy)
+		if index > -1:
+			row[index] = null
+			continue
+	
 	hud.score += 1
 	
 	if are_all_enemies_dead():

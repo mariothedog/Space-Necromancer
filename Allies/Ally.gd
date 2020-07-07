@@ -12,13 +12,13 @@ onready var ALLIES_POS_Y = level_node.get_node("Allies Pos Y").position.y
 # Variables
 var immortal = true
 
-func _physics_process(_delta):
+func _physics_process(_delta) -> void:
 	if position.y != ALLIES_POS_Y:
 		position.y = move_toward(position.y, ALLIES_POS_Y, 10)
 
 func die() -> void:
 	queue_free()
 
-func _on_AnimationPlayer_animation_finished(anim_name):
+func _on_AnimationPlayer_animation_finished(anim_name) -> void:
 	if anim_name == "Turn to Ally":
 		immortal = false
