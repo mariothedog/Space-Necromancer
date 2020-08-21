@@ -1,8 +1,5 @@
 extends Area2D
 
-# Signals
-signal died
-
 # Get nodes
 onready var visibility_notifier = get_node("VisibilityNotifier2D")
 
@@ -10,6 +7,7 @@ onready var visibility_notifier = get_node("VisibilityNotifier2D")
 var velocity = Vector2()
 var collisions = 0
 var max_collisions = 1
+# warning-ignore:unused_class_variable
 var immortal = false
 
 func _ready() -> void:
@@ -36,4 +34,3 @@ func _on_bullet_screen_exit() -> void:
 
 func die() -> void:
 	queue_free()
-	emit_signal("died")

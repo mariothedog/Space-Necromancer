@@ -38,4 +38,8 @@ autoplay = "Turn to Ally"
 
 [node name="Hurt" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource( 2 )
+
+[node name="Shoot" type="Timer" parent="."]
+wait_time = 0.2
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="timeout" from="Shoot" to="." method="_on_Shoot_timeout"]

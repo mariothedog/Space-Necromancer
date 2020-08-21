@@ -1,7 +1,7 @@
 extends Node
 
 # Preload resources
-onready var enemy_scene = preload("res://Enemies/Enemy.tscn")
+var enemy_scene = preload("res://Enemies/Enemy.tscn")
 
 # Get nodes
 onready var enemies_collection_node = get_node("Enemies")
@@ -14,7 +14,7 @@ onready var hud = get_node("HUD")
 const NUM_OF_ENEMIES_IN_ROW = 11
 const NUM_OF_ROWS = 5
 
-onready var TOP_ROW_POS = get_node("Top Row Start Pos").position
+onready var TOP_ROW_POS = (get_node("Top Row Start Pos") as Position2D).position
 
 const ROW_GAP_Y = 45
 const ENEMY_GAP_X = 50
@@ -22,9 +22,8 @@ const ENEMY_GAP_X = 50
 const ENEMY_MOVEMENT_SPEED_X = 30
 const ENEMY_MOVEMENT_SPEED_Y = 70
 
-const ENEMY_SHOOT_DIRECTION = Vector2.DOWN
-const MIN_ENEMY_SHOOT_COOLDOWN = 0.5
-const MAX_ENEMY_SHOOT_COOLDOWN = 1.5
+const MIN_ENEMY_SHOOT_COOLDOWN = 0.1
+const MAX_ENEMY_SHOOT_COOLDOWN = 0.2
 
 # Variables
 var enemy_rows = []
@@ -108,7 +107,7 @@ func _on_Enemy_Shoot_timeout() -> void:
 	var rand_enemy = null
 	while rand_enemy == null:
 		rand_enemy = enemy_rows[randi() % NUM_OF_ROWS][randi() % NUM_OF_ENEMIES_IN_ROW]
-	rand_enemy.shoot(ENEMY_SHOOT_DIRECTION)
+	rand_enemy.shoot(rand_enemy.SHOOT_DIRECTION)
 
 func _on_enemy_death(enemy) -> void:
 	for row in enemy_rows:

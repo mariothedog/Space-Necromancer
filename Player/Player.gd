@@ -3,7 +3,7 @@ extends KinematicBody2D
 signal queue_freed
 
 # Preload resources
-onready var bullet_scene = preload("res://Bullets/Friendly Bullet.tscn")
+var bullet_scene = preload("res://Bullets/Friendly Bullet.tscn")
 
 # Get nodes
 onready var level_node = get_parent()
@@ -25,6 +25,7 @@ const NUM_MOVEMENT_FRAMES = 2
 var velocity = Vector2()
 var can_shoot = true
 var current_bullet = null
+# warning-ignore:unused_class_variable
 var immortal = false
 var dead = false
 
@@ -39,7 +40,7 @@ func get_input() -> void:
 	var input_x = Input.get_action_strength("move_right") - Input.get_action_strength("move_left")
 	velocity.x = input_x * SPEED
 	
-	if Input.is_action_pressed("shoot") and current_bullet == null and can_shoot:
+	if Input.is_action_pressed("shoot") and can_shoot:
 		shoot(Vector2.UP)
 		can_shoot = false
 		shoot_delay_timer.start()
@@ -51,7 +52,6 @@ func shoot(dir : Vector2) -> void:
 	var bullet = bullet_scene.instance()
 	bullet.position = position
 	bullet.velocity = dir * BULLET_SPEED
-	bullet.connect("died", self, "_on_bullet_death")
 	bullets_collection_node.add_child(bullet)
 	current_bullet = bullet
 	

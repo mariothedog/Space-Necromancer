@@ -6,8 +6,8 @@ signal died
 signal wall_detected
 
 # Preload resources
-onready var bullet_scene = preload("res://Bullets/Hostile Bullet.tscn")
-onready var ally_scene = preload("res://Allies/Ally.tscn")
+var bullet_scene = preload("res://Bullets/Hostile Bullet.tscn")
+var ally_scene = preload("res://Allies/Ally.tscn")
 
 # Get nodes
 onready var enemies_collection_node = get_parent()
@@ -26,6 +26,7 @@ const WALL_DETECTOR_CAST_LENGTH = 60
 
 const BULLET_SPEED = 800
 const SHOOT_CHANCE = 0.0005
+const SHOOT_DIRECTION = Vector2.DOWN
 
 const ENEMY_TEXTURES = [
 	preload("res://Enemies/Textures/Enemy0.png"),
@@ -43,7 +44,9 @@ export (int, 4) var type = 0 setget set_type
 
 # Variables
 var can_shoot = false
+# warning-ignore:unused_class_variable
 var direction = 1
+# warning-ignore:unused_class_variable
 var immortal = false
 var dead = false
 
@@ -98,7 +101,7 @@ func die() -> void:
 	
 	queue_free_after_death_timer.start()
 	
-	shoot_sfx.play()
+	hurt_sfx.play()
 
 func _on_Before_Can_Shoot_timeout() -> void:
 	can_shoot = true
